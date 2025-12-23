@@ -1,0 +1,27 @@
+server:
+  port: 8888  # 后端运行端口
+
+spring:
+  application:
+    name: personal-site
+
+  # 数据库配置
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    # 注意：localhost:5432 是默认地址，personal_site 是刚才建的库名
+    url: jdbc:postgresql://localhost:5432/personal_site
+    username: postgres  # 数据库账号，默认 postgres
+    password: 200206
+
+  # JPA (ORM框架) 配置
+  jpa:
+    # 自动更新数据库表结构 (update: 有变动就更新，none: 不动，create: 每次重删)
+    # 开发阶段用 update，生产环境通常配合 Flyway 用 validate
+    hibernate:
+      ddl-auto: update
+    show-sql: true # 在控制台打印 SQL 语句，方便调试
+    properties:
+      hibernate:
+        format_sql: true # 格式化打印的 SQL
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
