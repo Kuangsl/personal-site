@@ -1,14 +1,13 @@
 package top.kuangsl.personal_site.entity
 
 import jakarta.persistence.*
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
-/**
- * 使用 @Entity 告诉 Spring 这对应数据库里的一张表
- */
 @Entity
-@Table(name = "sys_user") // 数据库表名为 sys_user
-data class User(
+@Table(name = "sys_user")
+class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
@@ -17,16 +16,28 @@ data class User(
     var username: String,
 
     @Column(nullable = false)
-    var password: String, // 实际开发中这里存的是加密后的哈希值
+    var password: String,
 
     @Column(length = 100)
     var email: String? = null,
 
-    @Column(name = "create_time")
-    var createTime: LocalDateTime = LocalDateTime.now(),
+    @Column(name = "nickname", length = 50)//昵称
+    var nickname: String? = null,
 
-    @Column(name = "last_login")
-    var lastLogin: LocalDateTime? = null,
+    @Column(name = "avatar_url")//头像url
+    var avatarUrl: String? = null,
 
-    var role: String = "USER" // 权限角色：ADMIN, USER
+    @Column(nullable = false)
+    var role: String = "USER", // ADMIN, USER
+
+    @Column(nullable = false)
+    var status: Int = 1, // 1: 正常, 0: 禁用
+
+    @CreationTimestamp
+    @Column(name = "create_time", updatable = false)
+    var createTime: LocalDateTime? = null,
+
+    @UpdateTimestamp
+    @Column(name = "update_time")
+    var updateTime: LocalDateTime? = null
 )
