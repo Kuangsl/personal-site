@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '../store/auth' // 引入你的 Pinia store
+import { useAuthStore } from '../stores/auth' // 引入你的 Pinia store
 import Login from '../views/Login.vue'
 
 // 定义路由表

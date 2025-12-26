@@ -3,7 +3,7 @@
     import { useRouter } from 'vue-router'
     import { useMessage } from 'naive-ui'
     import axios from 'axios'
-    import { useAuthStore } from '../store/auth'
+    import { useAuthStore } from '../stores/auth'
     
     const formValue = ref({ username: '', password: '' })
     const loading = ref(false)
