@@ -25,3 +25,7 @@ spring:
         format_sql: true # 格式化打印的 SQL
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+jwt:
+  # 注意：生产环境请使用更长更复杂的随机字符串
+  secret: "MySuperSecretKeyForPersonalSiteThatMustBeVeryLongAndSecure2025"
+  expiration: 86400000 # 24小时 (毫秒)
