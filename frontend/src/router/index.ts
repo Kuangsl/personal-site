@@ -1,38 +1,52 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '../stores/auth' // 引入你的 Pinia store
-import Login from '../views/Login.vue'
+import MainLayout from '../layouts/MainLayout.vue'
+import HomeView from '../views/HomeView.vue'
+import Profile from '../views/Profile.vue'
+import { useAuthStore } from '../stores/auth'
 
-// 定义路由表
-const routes = [
-    {
-        path: '/login',
-        name: 'Login',
-        component: Login
-    },
-    {
-        path: '/',
-        name: 'Dashboard',
-        // 这里只是个临时主页，之后你可以替换成真正的 Dashboard 组件
-        component: () => import('../components/HelloWorld.vue'), 
-        meta: { requiresAuth: true } // 标记需要登录
-    }
-]
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/',
+      component: MainLayout, // 父路由加载布局（导航栏）
+      children: [
+        {
+          path: '', // 空路径表示默认子路由
+          name: 'Home',
+          component: HomeView
+        },
+        {
+          path: 'profile',
+          name: 'Profile',
+          component: Profile,
+          meta: { requiresAuth: true },
+        }
+      ]
+    },
+    {
+      // 匹配所有路径，正则 (.*)* 表示捕获任意字符
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('../views/NotFound.vue')
+    }
+  ]
 })
 
-// 🔥 路由守卫：防止未登录直接访问主页
-router.beforeEach((to, from, next) => {
-    const authStore = useAuthStore()
-    
-    // 如果要去的地方需要登录，且目前没有 token
-    if (to.meta.requiresAuth && !authStore.token) {
-        next('/login') // 强制踢回登录页
-    } else {
-        next() // 放行
-    }
+// 👇 3. 核心逻辑：全局路由守卫
+router.beforeEach((to, _from, next) => {
+  const authStore = useAuthStore() // 在这里调用 store 是安全的
+
+  // 判断逻辑：如果目标路由需要认证 (requiresAuth) 且 用户没有 Token
+  if (to.meta.requiresAuth && !authStore.token) {
+    // 强制跳转回主页
+    next('/')
+
+  } else {
+    // 否则放行
+    next()
+  }
 })
 
 export default router
