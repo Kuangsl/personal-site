@@ -2,6 +2,7 @@ package top.kuangsl.personal_site.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -54,6 +55,8 @@ class SecurityConfig(
             .authorizeHttpRequests { auth ->
                 // 放行登录和注册接口
                 auth.requestMatchers("/api/auth/**").permitAll()
+                auth.requestMatchers("/uploads/**").permitAll()
+                auth.requestMatchers(HttpMethod.GET, "/api/articles/**").permitAll()
                 // 其他所有接口都需要验证
                 auth.anyRequest().authenticated()
             }
@@ -63,4 +66,7 @@ class SecurityConfig(
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
     }
+
+
+
 }
