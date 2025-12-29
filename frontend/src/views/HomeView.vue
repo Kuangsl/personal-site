@@ -88,8 +88,8 @@ const goTo = (path: string) => router.push(path)
 
 .animate-title {
     font-size: 4rem;
-    height: 80px;
-    margin: 0 0 16px 0;
+    height: 95px;
+    margin: 0 0 0 0;
     background: linear-gradient(to right, #0683ff, #21be13);
     -webkit-background-clip: text;
     background-clip: text;
