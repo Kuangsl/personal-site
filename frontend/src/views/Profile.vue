@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { reactive, onMounted } from 'vue'
 import {
     NCard, NAvatar, NTabs, NTabPane,
     NButton, NInput, NForm, NFormItem, useMessage, NUpload, type UploadCustomRequestOptions

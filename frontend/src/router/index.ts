@@ -3,6 +3,9 @@ import MainLayout from '../layouts/MainLayout.vue'
 import HomeView from '../views/HomeView.vue'
 import Profile from '../views/Profile.vue'
 import { useAuthStore } from '../stores/auth'
+import VideoView from '../views/VideoView.vue'
+import NullView from '../views/NullView.vue'
+import NotFound from '../views/NotFound.vue'
 
 
 const router = createRouter({
@@ -16,9 +19,40 @@ const router = createRouter({
           path: '', // 空路径表示默认子路由
           name: 'Home',
           component: HomeView
-        },
-        {
-          path: 'profile',
+        }, {
+          path: '/videos',
+          name: 'videos',
+          component: VideoView
+        }, {
+          path: '/articles',
+          name: 'articles',
+          component: NullView
+        }, {
+          path: '/manga',
+          name: 'manga',
+          component: NullView
+        }, {
+          path: '/novels',
+          name: 'novels',
+          component: NullView
+        }, {
+          path: '/photos',
+          name: 'photos',
+          component: NullView
+        }, {
+          path: '/games',
+          name: 'games',
+          component: NullView
+        }, {
+          path: '/cloud',
+          name: 'cloud',
+          component: NullView
+        }, {
+          path: '/repository',
+          name: 'repository',
+          component: NullView
+        }, {
+          path: '/profile',
           name: 'Profile',
           component: Profile,
           meta: { requiresAuth: true },
@@ -29,12 +63,12 @@ const router = createRouter({
       // 匹配所有路径，正则 (.*)* 表示捕获任意字符
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: () => import('../views/NotFound.vue')
+      component: NotFound
     }
   ]
 })
 
-// 👇 3. 核心逻辑：全局路由守卫
+// 全局路由守卫
 router.beforeEach((to, _from, next) => {
   const authStore = useAuthStore() // 在这里调用 store 是安全的
 

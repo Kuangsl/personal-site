@@ -5,12 +5,14 @@ import { useMessage, NCard, NTabs, NTabPane, NForm, NFormItem, NInput, NButton }
 import axios from 'axios'
 import { useAuthStore } from '../stores/auth' // 引入我们之前写的 store
 
-// 使用 Naive UI 的消息提示
+/**
+ * 使用 Naive UI 的消息提示
+ */
 const message = useMessage()
 // 使用 Pinia store
 const authStore = useAuthStore()
 
-// 当前是登录还是注册模式 ('login' | 'register')
+// 当前模式是登录'login'还是注册'register'
 const activeTab = ref('login')
 const loading = ref(false)
 
@@ -20,7 +22,7 @@ const formModel = reactive({
   password: '',
   confirmPassword: '' // 注册时多一个确认密码
 })
-// 定义 emits
+// 定义触发器
 const emit = defineEmits(['success'])
 // 处理提交 (登录或注册)
 const handleSubmit = async () => {
@@ -29,30 +31,28 @@ const handleSubmit = async () => {
     message.warning('请输入用户名和密码')
     return
   }
-
   if (activeTab.value === 'register') {
     if (formModel.password !== formModel.confirmPassword) {
       message.error('两次输入的密码不一致')
       return
     }
   }
-
   loading.value = true
   try {
-    // 2. 根据模式决定调用哪个接口
+    // 根据模式决定调用哪个接口
     const url = activeTab.value === 'login' ? '/api/auth/login' : '/api/auth/register'
-
     // 发送请求
     const response = await axios.post(url, {
       username: formModel.username,
       password: formModel.password
     })
 
-    // 3. 处理成功响应
+    // 处理成功响应
     if (activeTab.value === 'login') {
       // 登录成功：拿到 token 和 username，存入 store
       const { token, username } = response.data
       authStore.setAuth(token, username)
+      await authStore.fetchUserInfo()
       message.success('登录成功，欢迎回来！')
       emit('success')
     } else {
@@ -64,8 +64,7 @@ const handleSubmit = async () => {
     }
 
   } catch (error: any) {
-    // 4. 处理失败响应
-    // 获取后端返回的错误信息，如果没有则显示默认信息
+    // 处理失败响应:获取后端返回的错误信息，如果没有则显示默认信息
     const errorMsg = error.response?.data || '操作失败，请检查网络或联系管理员'
     message.error(typeof errorMsg === 'string' ? errorMsg : JSON.stringify(errorMsg))
     console.error(error)
@@ -76,23 +75,24 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <n-card class="auth-card">
+  <n-card class="auth-card" @keyup.enter="handleSubmit">
     <n-tabs v-model:value="activeTab" size="large" justify-content="space-evenly" animated>
+      <!-- 登录 -->
       <n-tab-pane name="login" tab="登 录">
         <n-form size="large" class="login-form">
           <n-form-item label="用户名">
             <n-input v-model:value="formModel.username" placeholder="请输入用户名" active-bar-bar />
           </n-form-item>
           <n-form-item label="密码">
-            <n-input v-model:value="formModel.password" type="password" show-password-on="mousedown" placeholder="请输入密码"
-              @keyup.enter="handleSubmit" />
+            <n-input v-model:value="formModel.password" type="password" show-password-on="mousedown"
+              placeholder="请输入密码" />
           </n-form-item>
           <n-button type="primary" block size="large" :loading="loading" @click="handleSubmit">
             立即登录
           </n-button>
         </n-form>
       </n-tab-pane>
-
+      <!-- 注册 -->
       <n-tab-pane name="register" tab="注 册">
         <n-form size="large" class="login-form">
           <n-form-item label="用户名">
@@ -104,7 +104,7 @@ const handleSubmit = async () => {
           </n-form-item>
           <n-form-item label="确认密码">
             <n-input v-model:value="formModel.confirmPassword" type="password" show-password-on="mousedown"
-              placeholder="请再次输入密码" @keyup.enter="handleSubmit" />
+              placeholder="请再次输入密码" />
           </n-form-item>
           <n-button type="success" block size="large" :loading="loading" @click="handleSubmit">
             确认注册

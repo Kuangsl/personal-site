@@ -8,11 +8,9 @@ import { useAuthStore } from './stores/auth' // 👈 引入 store
 
 const app = createApp(App)
 
-// 1. 创建并挂载 Pinia 实例 (用于管理登录状态)
+// 创建并挂载 Pinia 实例 (用于管理登录状态)
 const pinia = createPinia()
 app.use(pinia)
-
-// 注意：我们暂时不使用 router，先确保基本功能跑通
 app.use(router)
 
 
@@ -36,5 +34,5 @@ axios.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
+// 挂载路由
 app.mount('#app')

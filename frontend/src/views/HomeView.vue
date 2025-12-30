@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { NGrid, NGridItem, NCard, NIcon, NButton, NSpace, NCarousel } from 'naive-ui'
+import { NGrid, NGridItem, NCard, NIcon, NButton } from 'naive-ui'
 import {
     FilmOutline, BookOutline, ImagesOutline, GameControllerOutline,
     CloudOutline, CodeSlashOutline, ArrowForwardOutline
@@ -10,12 +10,12 @@ const router = useRouter()
 
 // 功能模块配置
 const features = [
-    { title: '影视中心', desc: '高清电影、剧集收藏', icon: FilmOutline, path: '/movies', color: '#70c0e8' },
+    { title: '影视中心', desc: '高清电影、剧集收藏', icon: FilmOutline, path: '/videos', color: '#70c0e8' },
     { title: '文章笔记', desc: '技术教程、随笔记录', icon: BookOutline, path: '/articles', color: '#63e2b7' },
     { title: '精彩相册', desc: '记录生活每一刻', icon: ImagesOutline, path: '/photos', color: '#f2c97d' },
     { title: '娱乐游戏', desc: '休闲小游戏集合', icon: GameControllerOutline, path: '/games', color: '#e88080' },
-    { title: '私有网盘', desc: '文件存储与分享', icon: CloudOutline, path: '/drive', color: '#8a8af2' },
-    { title: '代码仓库', desc: 'Web IDE 在线编程', icon: CodeSlashOutline, path: '/code', color: '#333333' }
+    { title: '私有网盘', desc: '文件存储与分享', icon: CloudOutline, path: '/cloud', color: '#8a8af2' },
+    { title: '代码仓库', desc: 'Web IDE 在线编程', icon: CodeSlashOutline, path: '/repository', color: '#333333' }
 ]
 
 const goTo = (path: string) => router.push(path)
